@@ -1,12 +1,20 @@
 #File: guessinggame.sh
 
-echo "How many files are in $(pwd)?"
+function getguess {
+	echo "How many files are in $(pwd)?"
 
-read response
+	read response
+	while [[ ! $response =~ ^[0-9]+$ ]]; do
+		echo "Response invalid. Please enter a number"
+		read response
+	done
 
-echo "You guessed $response..."
+	echo "You guessed $response..."
+}
 
-files=$(ls | wc -l)
+getguess
+
+files=$(ls -A | wc -l)
 
 while [[ $response -ne $files ]]; do
 	if [[ $response -lt $files ]]; then
@@ -14,10 +22,7 @@ while [[ $response -ne $files ]]; do
 	else 
 		echo "That was too high. Please try again."
 	fi
-	echo ""
-	echo "How many files are in the current folder?"
-	read response
-	echo "You guessed $response..."
+	getguess
 done
 
 echo "That was correct!!" 
